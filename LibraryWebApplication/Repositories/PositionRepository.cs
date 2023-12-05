@@ -18,6 +18,10 @@ namespace LibraryWebApplication.Repositories
         {
             return db.Positions;
         }
+        public int GetCount()
+        {
+            return db.Positions.Count();
+        }
 
         public IEnumerable<Position> GetPage(int pageNumber, int pageSize)
         {

@@ -19,6 +19,11 @@ namespace LibraryWebApplication.Repositories
             return db.Genres;
         }
 
+        public int GetCount()
+        {
+            return db.Genres.Count();
+        }
+
         public IEnumerable<Genre> GetPage(int pageNumber, int pageSize)
         {
             return db.Genres.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList(); ;

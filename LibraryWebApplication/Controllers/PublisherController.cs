@@ -15,9 +15,13 @@ namespace LibraryWebApplication.Controllers
         }
 
         [ResponseCache(Duration = 268)]
-        public ActionResult Index()
+        public ActionResult Index(int pageNumber = 1, int pageSize = 10)
         {
-            return View(publishers.GetAll());
+            ViewBag.PageNumber = pageNumber;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)publishers.GetCount() / pageSize);
+
+            return View(publishers.GetPage(pageNumber, pageSize));
         }
 
         public ActionResult Create()

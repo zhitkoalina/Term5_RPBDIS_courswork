@@ -18,14 +18,24 @@ namespace LibraryWebApplication.Repositories
         public IEnumerable<Employee> GetAll()
         {
             return db.Employees
-                .OrderBy(e => e.EmployeeId)
+                .OrderByDescending(e => e.EmployeeId)
                 .Include(e => e.Position)
                 .ToList();
         }
 
+        public int GetCount()
+        {
+            return db.Employees.Count();
+        }
+
         public IEnumerable<Employee> GetPage(int pageNumber, int pageSize)
         {
-            return db.Employees.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList(); ;
+            return db.Employees
+                .OrderByDescending(e => e.EmployeeId)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Include(e => e.Position)
+                .ToList();
         }
 
         public Employee GetItem(int id)

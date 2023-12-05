@@ -41,4 +41,29 @@
             </tr>
         }
     </tbody>
+
+    <div class="pagination">
+        @if (ViewBag.TotalPages > 0)
+        {
+            @if (ViewBag.PageNumber > 1)
+            {
+                <a href="@Url.Action("Index", new { pageNumber = ViewBag.PageNumber - 1, pageSize = ViewBag.PageSize })">&laquo; Previous</a>
+            }
+
+            @for (int i = Math.Max(1, ViewBag.PageNumber - 5); i <= Math.Min(ViewBag.TotalPages, ViewBag.PageNumber + 5); i++)
+            {
+                if (i > 1 && i < ViewBag.PageNumber - 5)
+                {
+                    <span>...</span>
+                    i = ViewBag.PageNumber - 5;
+                }
+                <a href="@Url.Action("Index", new { pageNumber = i, pageSize = ViewBag.PageSize })" class="@(i == ViewBag.PageNumber ? "active" : "")">@i</a>
+            }
+
+            @if (ViewBag.PageNumber < ViewBag.TotalPages)
+            {
+                <a href="@Url.Action("Index", new { pageNumber = ViewBag.PageNumber + 1, pageSize = ViewBag.PageSize })">Next &raquo;</a>
+            }
+        }
+    </div>
 </table>

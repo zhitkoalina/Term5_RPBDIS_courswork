@@ -18,14 +18,24 @@ namespace LibraryWebApplication.Repositories
         public IEnumerable<Publisher> GetAll()
         {
             return db.Publishers
-                .OrderBy(p => p.PublisherId)
+                .OrderByDescending(p => p.PublisherId)
                 .Include(p => p.City)
                 .ToList();
         }
 
+        public int GetCount()
+        {
+            return db.Publishers.Count();
+        }
+
         public IEnumerable<Publisher> GetPage(int pageNumber, int pageSize)
         {
-            return db.Publishers.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList(); ;
+            return db.Publishers
+               .OrderByDescending(p => p.PublisherId)
+               .Skip((pageNumber - 1) * pageSize)
+               .Take(pageSize)
+               .Include(p => p.City)
+               .ToList();
         }
 
         public Publisher GetItem(int id)

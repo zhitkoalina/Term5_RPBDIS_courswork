@@ -19,6 +19,11 @@ namespace LibraryWebApplication.Repositories
             return db.Cities;
         }
 
+        public int GetCount()
+        {
+            return db.Cities.Count();
+        }
+
         public IEnumerable<City> GetPage(int pageNumber, int pageSize)
         {
             return db.Cities.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList(); ;

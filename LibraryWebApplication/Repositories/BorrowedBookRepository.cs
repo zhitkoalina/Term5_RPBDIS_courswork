@@ -18,16 +18,28 @@ namespace LibraryWebApplication.Repositories
         public IEnumerable<BorrowedBook> GetAll()
         {
             return db.BorrowedBooks
-                .OrderBy(b => b.BorrowId)
+                .OrderByDescending(b => b.BorrowId)
                 .Include(b => b.Book)
                 .Include(b => b.Employee)
                 .Include(b => b.Reader)
                 .ToList();
         }
 
+        public int GetCount()
+        {
+            return db.BorrowedBooks.Count();
+        }
+
         public IEnumerable<BorrowedBook> GetPage(int pageNumber, int pageSize)
         {
-            return db.BorrowedBooks.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList(); ;
+            return db.BorrowedBooks
+                .OrderByDescending(b => b.BorrowId)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Include(b => b.Book)
+                .Include(b => b.Employee)
+                .Include(b => b.Reader)
+                .ToList();
         }
 
         public BorrowedBook GetItem(int id)

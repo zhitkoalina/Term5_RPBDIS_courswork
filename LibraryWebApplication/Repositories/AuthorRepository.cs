@@ -19,6 +19,11 @@ namespace LibraryWebApplication.Repositories
             return db.Authors;
         }
 
+        public int GetCount()
+        {
+            return db.Authors.Count();
+        }
+
         public IEnumerable<Author> GetPage(int pageNumber, int pageSize)
         {
             return db.Authors.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList(); ;
