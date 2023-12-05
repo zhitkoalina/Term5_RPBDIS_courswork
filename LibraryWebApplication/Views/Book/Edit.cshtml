@@ -1,0 +1,59 @@
+﻿@model LibraryWebApplication.Models.Book
+
+<h2>Edit Publisher</h2>
+
+<form asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input type="hidden" asp-for="BookId" />
+
+    <div class="form-group">
+        <label asp-for="Isbn" class="control-label">ISBN</label>
+        <input asp-for="Isbn" class="form-control" />
+        <span asp-validation-for="Isbn" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Title" class="control-label">Title</label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="AuthorId" class="control-label">Author</label>
+        <select asp-for="AuthorId" asp-items="ViewBag.AuthorOptions" class="form-control"></select>
+        <span asp-validation-for="AuthorId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PublisherId" class="control-label">Publisher</label>
+        <select asp-for="PublisherId" asp-items="ViewBag.PublisherOptions" class="form-control"></select>
+        <span asp-validation-for="PublisherId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PublishYear" class="control-label">Publish Year</label>
+        <input asp-for="PublishYear" class="form-control" />
+        <span asp-validation-for="PublishYear" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="GenreId" class="control-label">Genre</label>
+        <select asp-for="GenreId" asp-items="ViewBag.GenreOptions" class="form-control"></select>
+        <span asp-validation-for="GenreId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Price" class="control-label">Price</label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

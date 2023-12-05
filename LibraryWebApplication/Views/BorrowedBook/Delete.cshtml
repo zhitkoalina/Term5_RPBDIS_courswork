@@ -1,0 +1,47 @@
+﻿@model LibraryWebApplication.Models.BorrowedBook
+
+<h2>Delete Borrow</h2>
+
+<p>Are you sure you want to delete this borrow?</p>
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Book.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Book.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Reader.LastName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Reader.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Reader.FirstName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Reader.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BorrowDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BorrowDate)
+        </dd>
+    </dl>
+    <form asp-action="Delete" asp-route-id="@Model.BorrowId" method="post">
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-default">Cancel</a>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

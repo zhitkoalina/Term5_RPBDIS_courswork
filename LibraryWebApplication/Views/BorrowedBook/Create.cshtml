@@ -1,0 +1,65 @@
+﻿@model LibraryWebApplication.Models.BorrowedBook
+
+<h2>Create New Borrow</h2>
+
+<form asp-action="Create">
+    <div class="form-group">
+        <label asp-for="BookId" class="control-label">Book</label>
+        <select asp-for="BookId" asp-items="ViewBag.BookOptions" class="form-control">
+            <option value=""> </option>
+        </select>
+        <span asp-validation-for="BookId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ReaderId" class="control-label">Reader</label>
+        <select asp-for="ReaderId" asp-items="ViewBag.ReaderOptions" class="form-control">
+            <option value=""> </option>
+        </select>
+        <span asp-validation-for="ReaderId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EmployeeId" class="control-label">Employee</label>
+        <select asp-for="EmployeeId" asp-items="ViewBag.EmployeeOptions" class="form-control">
+            <option value=""> </option>
+        </select>
+        <span asp-validation-for="EmployeeId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="BorrowDate" class="control-label">Borrow Date</label>
+        <input asp-for="BorrowDate" class="form-control" />
+        <span asp-validation-for="BorrowDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ReturnDate" class="control-label">Return Date</label>
+        <input asp-for="ReturnDate" class="form-control" />
+        <span asp-validation-for="ReturnDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ReturnStatus" class="control-label">Return Status</label>
+        <select asp-for="ReturnStatus" class="form-control">
+            <option value=""></option>
+            <option value="true">True</option>
+            <option value="false">False</option>
+        </select>
+        <span asp-validation-for="ReturnStatus" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

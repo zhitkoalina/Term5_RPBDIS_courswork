@@ -1,0 +1,108 @@
+﻿@model IEnumerable<LibraryWebApplication.Models.BorrowedBook>
+
+<h2>Borrowed Books</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+@*<form id="filterForm">
+    <div>
+        <label for="returnStatus">Return Status:</label>
+        <select id="returnStatus" name="returnStatus">
+            <option value="">All</option>
+            <option value="True">Returned</option>
+            <option value="False">Not Returned</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="authorFirstName">Author First Name:</label>
+        <input type="text" id="authorFirstName" name="authorFirstName">
+    </div>
+
+    <div>
+        <label for="authorLastName">Author Last Name:</label>
+        <input type="text" id="authorLastName" name="authorLastName">
+    </div>
+
+    <div>
+        <label for="genreName">Genre Name:</label>
+        <input type="text" id="genreName" name="genreName">
+    </div>
+
+    <button type="button" onclick="applyFilters()">Apply Filters</button>
+</form>*@
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Book.Isbn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Book.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Reader.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Reader.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BorrowDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReturnDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReturnStatus)
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Book.Isbn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Book.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Reader.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Reader.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Employee.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Employee.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BorrowDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReturnDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReturnStatus)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.BookId">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.BookId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
