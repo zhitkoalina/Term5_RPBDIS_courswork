@@ -1,0 +1,12 @@
+﻿@model LibraryWebApplication.Models.Book
+
+<h2>Book Details</h2>
+<div>
+    <h4>Title: @Model.Title</h4>
+    <p>ISBN: @Model.Isbn</p>
+    <p>Author: @Model.Author.LastName, @Model.Author.FirstName, @Model.Author.FatherName</p>
+    <p>Publisher: @Model.Publisher.Name</p>
+    <p>Publish Year: @Model.PublishYear</p>
+    <p>Genre: @Model.Genre.Name</p>
+    <p>Price: @Model.Price</p>
+</div>

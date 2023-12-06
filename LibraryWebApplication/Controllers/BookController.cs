@@ -24,6 +24,19 @@ namespace LibraryWebApplication.Controllers
             return View(books.GetPage(pageNumber, pageSize));
         }
 
+        public IActionResult Details(int id)
+        {
+            Book book = books.GetItem(id);
+
+            if (book == null)
+            {
+                return View("Error");
+            }
+
+            return View(book);
+        }
+
+
         public ActionResult Create()
         {
             ViewBag.AuthorOptions = books.GetAuthorsNames();

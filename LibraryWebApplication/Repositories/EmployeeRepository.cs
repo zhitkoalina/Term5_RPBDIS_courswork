@@ -38,6 +38,64 @@ namespace LibraryWebApplication.Repositories
                 .ToList();
         }
 
+        public IEnumerable<Employee> GetFilteredPage(int pageNumber, int pageSize, string? firstName, string? lastName, string? fatherName, int? positionId)
+        {
+            IQueryable<Employee> query = db.Employees.Include(e => e.Position);
+
+            if (!string.IsNullOrEmpty(firstName))
+            {
+                query = query.Where(e => e.FirstName.Contains(firstName));
+            }
+
+            if (!string.IsNullOrEmpty(lastName))
+            {
+                query = query.Where(e => e.LastName.Contains(lastName));
+            }
+
+            if (!string.IsNullOrEmpty(fatherName))
+            {
+                query = query.Where(e => e.FatherName.Contains(fatherName));
+            }
+
+            if (positionId.HasValue)
+            {
+                query = query.Where(e => e.PositionId == positionId);
+            }
+
+            query = query.OrderByDescending(e => e.EmployeeId);
+
+            return query.Skip((pageNumber - 1) * pageSize)
+                        .Take(pageSize)
+                        .ToList();
+        }
+
+        public int GetFilteredCount(string? firstName, string? lastName, string? fatherName, int? positionId)
+        {
+            IQueryable<Employee> query = db.Employees;
+
+            if (!string.IsNullOrEmpty(firstName))
+            {
+                query = query.Where(e => e.FirstName.Contains(firstName));
+            }
+
+            if (!string.IsNullOrEmpty(lastName))
+            {
+                query = query.Where(e => e.LastName.Contains(lastName));
+            }
+
+            if (!string.IsNullOrEmpty(fatherName))
+            {
+                query = query.Where(e => e.FatherName.Contains(fatherName));
+            }
+
+            if (positionId.HasValue)
+            {
+                query = query.Where(e => e.PositionId == positionId);
+            }
+
+            return query.Count();
+        }
+
         public Employee GetItem(int id)
         {
             return db.Employees.Find(id);

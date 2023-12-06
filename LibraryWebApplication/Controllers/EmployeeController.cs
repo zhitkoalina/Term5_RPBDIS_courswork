@@ -15,13 +15,46 @@ namespace LibraryWebApplication.Controllers
         }
 
         [ResponseCache(Duration = 268)]
-        public ActionResult Index(int pageNumber = 1, int pageSize = 10)
+        public ActionResult Index(int pageNumber = 1, int pageSize = 10, string? firstName = null, string? lastName = null, string? fatherName = null, int? positionId = null)
         {
             ViewBag.PageNumber = pageNumber;
             ViewBag.PageSize = pageSize;
-            ViewBag.TotalPages = (int)Math.Ceiling((double)employees.GetCount() / pageSize);
+            ViewBag.Positions = employees.GetPositionsNames();
+            ViewBag.TotalPages = (int)Math.Ceiling((decimal)employees.GetFilteredCount(firstName, lastName, fatherName, positionId) / pageSize);
 
-            return View(employees.GetPage(pageNumber, pageSize));
+            ViewBag.FirstName = firstName;
+            ViewBag.LastName = lastName;
+            ViewBag.FatherName = fatherName;
+            ViewBag.PositionId = positionId;
+
+            if (!string.IsNullOrEmpty(firstName))
+            {
+                Response.Cookies.Append("firstName", firstName);
+            }
+            if (!string.IsNullOrEmpty(lastName))
+            {
+                Response.Cookies.Append("lastName", lastName);
+            }
+            if (!string.IsNullOrEmpty(fatherName))
+            {
+                Response.Cookies.Append("fatherName", fatherName);
+            }
+            if (positionId.HasValue)
+            {
+                Response.Cookies.Append("positionId", positionId.ToString());
+            }
+
+            return View(employees.GetFilteredPage(pageNumber, pageSize, firstName, lastName, fatherName, positionId));
+        }
+        [HttpPost]
+        public ActionResult Index(int pageNumber = 1, int pageSize = 10)
+        {
+            string? firstNameFilter = Request.Cookies["firstName"];
+            string? lastNameFilter = Request.Cookies["lastName"];
+            string? fatherNameFilter = Request.Cookies["fatherName"];
+            int? positionIdFilter = int.TryParse(Request.Cookies["positionId"], out var parsedPositionId) ? parsedPositionId : (int?)null;
+
+            return View(employees.GetFilteredPage(pageNumber, pageSize, firstNameFilter, lastNameFilter, fatherNameFilter, positionIdFilter));
         }
 
         public ActionResult Create()

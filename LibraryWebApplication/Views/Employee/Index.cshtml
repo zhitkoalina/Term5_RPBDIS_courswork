@@ -6,6 +6,40 @@
     <a asp-action="Create">Create New</a>
 </p>
 
+<div>
+    <form method="get" asp-action="Index">
+        <div class="form-group">
+            <label for="FirstName">First Name:</label>
+            <input type="text" name="FirstName" value="@ViewBag.FirstName" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="LastName">Last Name:</label>
+            <input type="text" name="LastName" value="@ViewBag.LastName" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="FatherName">Father Name:</label>
+            <input type="text" name="FatherName" value="@ViewBag.FatherName" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="PositionId">Position:</label>
+            <select name="PositionId" id="PositionId" class="form-control">
+                <option value="">All Positions</option>
+                @foreach (var position in ViewBag.Positions)
+                {
+                    <option value="@position.Value" selected="@(ViewBag.PositionId != null && ViewBag.PositionId.ToString() == position.Value)">
+                        @position.Text
+                    </option>
+                }
+            </select>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">Apply Filters</button>
+        </div>
+    </form>
+</div>
+
+
+
 <table class="table">
     <thead>
         <tr>
@@ -53,7 +87,7 @@
         {
             @if (ViewBag.PageNumber > 1)
             {
-                <a href="@Url.Action("Index", new { pageNumber = ViewBag.PageNumber - 1, pageSize = ViewBag.PageSize })">&laquo; Previous</a>
+                <a href="@Url.Action("Index", new { pageNumber = ViewBag.PageNumber - 1, pageSize = ViewBag.PageSize, FirstName = ViewBag.FirstName, LastName = ViewBag.LastName, FatherName = ViewBag.FatherName, PositionId = ViewBag.PositionId })">&laquo; Previous</a>
             }
 
             @for (int i = Math.Max(1, ViewBag.PageNumber - 5); i <= Math.Min(ViewBag.TotalPages, ViewBag.PageNumber + 5); i++)
@@ -63,12 +97,12 @@
                     <span>...</span>
                     i = ViewBag.PageNumber - 5;
                 }
-                <a href="@Url.Action("Index", new { pageNumber = i, pageSize = ViewBag.PageSize })" class="@(i == ViewBag.PageNumber ? "active" : "")">@i</a>
+                <a href="@Url.Action("Index", new { pageNumber = i, pageSize = ViewBag.PageSize, FirstName = ViewBag.FirstName, LastName = ViewBag.LastName, FatherName = ViewBag.FatherName, PositionId = ViewBag.PositionId })" class="@(i == ViewBag.PageNumber ? "active" : "")">@i</a>
             }
 
             @if (ViewBag.PageNumber < ViewBag.TotalPages)
             {
-                <a href="@Url.Action("Index", new { pageNumber = ViewBag.PageNumber + 1, pageSize = ViewBag.PageSize })">Next &raquo;</a>
+                <a href="@Url.Action("Index", new { pageNumber = ViewBag.PageNumber + 1, pageSize = ViewBag.PageSize, FirstName = ViewBag.FirstName, LastName = ViewBag.LastName, FatherName = ViewBag.FatherName, PositionId = ViewBag.PositionId })">Next &raquo;</a>
             }
         }
     </div>

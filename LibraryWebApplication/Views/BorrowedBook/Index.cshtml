@@ -6,33 +6,39 @@
     <a asp-action="Create">Create New</a>
 </p>
 
-@*<form id="filterForm">
-    <div>
-        <label for="returnStatus">Return Status:</label>
-        <select id="returnStatus" name="returnStatus">
-            <option value="">All</option>
-            <option value="True">Returned</option>
-            <option value="False">Not Returned</option>
-        </select>
-    </div>
-
-    <div>
-        <label for="authorFirstName">Author First Name:</label>
-        <input type="text" id="authorFirstName" name="authorFirstName">
-    </div>
-
-    <div>
-        <label for="authorLastName">Author Last Name:</label>
-        <input type="text" id="authorLastName" name="authorLastName">
-    </div>
-
-    <div>
-        <label for="genreName">Genre Name:</label>
-        <input type="text" id="genreName" name="genreName">
-    </div>
-
-    <button type="button" onclick="applyFilters()">Apply Filters</button>
-</form>*@
+<div>
+    <form method="get" asp-action="Index">
+        <div class="form-group">
+            <label for="ReturnStatus">Filter by Return Status:</label>
+            <select name="ReturnStatus" id="ReturnStatus" class="form-control">
+                <option value="" selected="@(ViewBag.ReturnStatus == null)">All</option>
+                <option value="true" selected="@(ViewBag.ReturnStatus == true)">Returned</option>
+                <option value="false" selected="@(ViewBag.ReturnStatus == false)">Not Returned</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="AuthorId">Filter by Author:</label>
+            <select name="AuthorId" id="AuthorId" class="form-control">
+                <option value="" selected="@(ViewBag.AuthorId == null)">All</option>
+                @foreach (var author in ViewBag.Authors)
+                {
+                    <option value="@author.Value" selected="@(ViewBag.AuthorId != null && ViewBag.AuthorId.ToString() == author.Value)">@author.Text</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="GenreId">Filter by Genre:</label>
+            <select name="GenreId" id="GenreId" class="form-control">
+                <option value="" selected="@(ViewBag.GenreId == null)">All</option>
+                @foreach (var genre in ViewBag.Genres)
+                {
+                    <option value="@genre.Value" selected="@(ViewBag.GenreId != null && ViewBag.GenreId.ToString() == genre.Value)">@genre.Text</option>
+                }
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Apply Filters</button>
+    </form>
+</div>
 
 <table class="table">
     <thead>
@@ -111,7 +117,7 @@
         {
             @if (ViewBag.PageNumber > 1)
             {
-                <a href="@Url.Action("Index", new { pageNumber = ViewBag.PageNumber - 1, pageSize = ViewBag.PageSize })">&laquo; Previous</a>
+                <a href="@Url.Action("Index", new { pageNumber = ViewBag.PageNumber - 1, pageSize = ViewBag.PageSize, returnStatus = ViewBag.ReturnStatus, authorId = ViewBag.AuthorId, genreId = ViewBag.GenreId })">&laquo; Previous</a>
             }
 
             @for (int i = Math.Max(1, ViewBag.PageNumber - 5); i <= Math.Min(ViewBag.TotalPages, ViewBag.PageNumber + 5); i++)
@@ -121,14 +127,16 @@
                     <span>...</span>
                     i = ViewBag.PageNumber - 5;
                 }
-                <a href="@Url.Action("Index", new { pageNumber = i, pageSize = ViewBag.PageSize })" class="@(i == ViewBag.PageNumber ? "active" : "")">@i</a>
+                <a href="@Url.Action("Index", new { pageNumber = i, pageSize = ViewBag.PageSize, returnStatus = ViewBag.ReturnStatus, authorId = ViewBag.AuthorId, genreId = ViewBag.GenreId })" class="@(i == ViewBag.PageNumber ? "active" : "")">@i</a>
             }
 
             @if (ViewBag.PageNumber < ViewBag.TotalPages)
             {
-                <a href="@Url.Action("Index", new { pageNumber = ViewBag.PageNumber + 1, pageSize = ViewBag.PageSize })">Next &raquo;</a>
+                <a href="@Url.Action("Index", new { pageNumber = ViewBag.PageNumber + 1, pageSize = ViewBag.PageSize, returnStatus = ViewBag.ReturnStatus, authorId = ViewBag.AuthorId, genreId = ViewBag.GenreId })">Next &raquo;</a>
             }
         }
     </div>
+
+
 
 </table>

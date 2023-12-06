@@ -1,4 +1,5 @@
-﻿using LibraryLib;
+﻿using Azure.Core;
+using LibraryLib;
 using LibraryWebApplication.Interfaces;
 using LibraryWebApplication.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -33,14 +34,74 @@ namespace LibraryWebApplication.Repositories
         public IEnumerable<BorrowedBook> GetPage(int pageNumber, int pageSize)
         {
             return db.BorrowedBooks
-                .OrderByDescending(b => b.BorrowId)
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
                 .Include(b => b.Book)
                 .Include(b => b.Employee)
                 .Include(b => b.Reader)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .ToList();
         }
+
+        public int GetFilteredCount(bool? returnStatus, int? authorId, int? genreId)
+        {
+            IQueryable<BorrowedBook> query = db.BorrowedBooks
+                .Include(b => b.Book)
+                    .ThenInclude(book => book.Author)
+                .Include(b => b.Book)
+                    .ThenInclude(book => book.Genre)
+                .Include(b => b.Employee)
+                .Include(b => b.Reader);
+
+            if (returnStatus.HasValue)
+            {
+                query = query.Where(b => b.ReturnStatus == returnStatus.Value);
+            }
+
+            if (authorId.HasValue)
+            {
+                query = query.Where(b => b.Book.AuthorId == authorId.Value);
+            }
+
+            if (genreId.HasValue)
+            {
+                query = query.Where(b => b.Book.GenreId == genreId.Value);
+            }
+
+            return query.Count();
+        }
+
+
+        public IEnumerable<BorrowedBook> GetFilteredPage(int pageNumber, int pageSize, bool? returnStatus, int? authorId, int? genreId)
+        {
+            IQueryable<BorrowedBook> query = db.BorrowedBooks
+                .Include(b => b.Book)
+                    .ThenInclude(book => book.Author)
+                .Include(b => b.Book)
+                    .ThenInclude(book => book.Genre)
+                .Include(b => b.Employee)
+                .Include(b => b.Reader);
+
+            if (returnStatus.HasValue)
+            {
+                query = query.Where(b => b.ReturnStatus == returnStatus.Value);
+            }
+
+            if (authorId.HasValue)
+            {
+                query = query.Where(b => b.Book.AuthorId == authorId.Value);
+            }
+
+            if (genreId.HasValue)
+            {
+                query = query.Where(b => b.Book.GenreId == genreId.Value);
+            }
+
+            return query.OrderByDescending(b => b.BorrowId)
+                        .Skip((pageNumber - 1) * pageSize)
+                        .Take(pageSize)
+                        .ToList();
+        }
+
 
         public BorrowedBook GetItem(int id)
         {
@@ -74,10 +135,24 @@ namespace LibraryWebApplication.Repositories
             db.SaveChanges();
         }
 
+        public IEnumerable<SelectListItem> GetAuthorsNames()
+        {
+            return db.Authors
+                .Select(a => new SelectListItem { Value = a.AuthorId.ToString(), Text = $"{a.LastName} {a.FirstName} {a.FatherName}" })
+                .ToList();
+        }
+
         public IEnumerable<SelectListItem> GetBooksNames()
         {
             return db.Books
                 .Select(b => new SelectListItem { Value = b.BookId.ToString(), Text = $"{b.Isbn} {b.Title}" })
+                .ToList();
+        }
+
+        public IEnumerable<SelectListItem> GetGenresNames()
+        {
+            return db.Genres
+                .Select(g => new SelectListItem { Value = g.GenreId.ToString(), Text = g.Name })
                 .ToList();
         }
 
@@ -94,5 +169,6 @@ namespace LibraryWebApplication.Repositories
                 .Select(r => new SelectListItem { Value = r.ReaderId.ToString(), Text = $"{r.LastName} {r.FirstName} {r.FatherName}" })
                 .ToList();
         }
+
     }
 }

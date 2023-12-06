@@ -45,7 +45,11 @@ namespace LibraryWebApplication.Repositories
 
         public Book GetItem(int id)
         {
-            return db.Books.Find(id);
+            return db.Books
+                .Include(b => b.Author)
+                .Include(b => b.Genre)
+                .Include(b => b.Publisher)
+                .SingleOrDefault(b => b.BookId == id);
         }
 
         public void Create(Book book)

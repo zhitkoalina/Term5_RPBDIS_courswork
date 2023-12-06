@@ -15,66 +15,43 @@ namespace LibraryWebApplication.Controllers
         }
 
         [ResponseCache(Duration = 268)]
-        public ActionResult Index(int pageNumber = 1, int pageSize = 10)
+        public ActionResult Index(int pageNumber = 1, int pageSize = 10, bool? returnStatus = null, int? authorId = null, int? genreId = null)
         {
             ViewBag.PageNumber = pageNumber;
             ViewBag.PageSize = pageSize;
-            ViewBag.TotalPages = (int)Math.Ceiling((decimal)borrowedBooks.GetCount() / pageSize);
+            ViewBag.Authors = borrowedBooks.GetAuthorsNames();
+            ViewBag.Genres = borrowedBooks.GetGenresNames();
+            ViewBag.TotalPages = (int)Math.Ceiling((decimal)borrowedBooks.GetFilteredCount(returnStatus, authorId, genreId) / pageSize);
 
-            return View(borrowedBooks.GetPage(pageNumber, pageSize));
+            ViewBag.ReturnStatus = returnStatus;
+            ViewBag.AuthorId = authorId;
+            ViewBag.GenreId = genreId;
+
+            Response.Cookies.Append("returnStatus", returnStatus?.ToString() ?? "");
+            Response.Cookies.Append("authorId", authorId?.ToString() ?? "");
+            Response.Cookies.Append("genreId", genreId?.ToString() ?? "");
+
+            return View(borrowedBooks.GetFilteredPage(pageNumber, pageSize, returnStatus, authorId, genreId));
         }
-
-        //public ActionResult BooksOnHands(bool? returnStatus)
-        //{
-        //    var borrowedBooksList = borrowedBooks.GetAll();
-
-        //    if (returnStatus.HasValue)
-        //    {
-        //        borrowedBooksList = borrowedBooksList.Where(b => b.ReturnStatus == returnStatus.Value);
-        //    }
-
-        //    SaveFilterToCookie("ReturnStatusFilter", returnStatus);
-
-        //    return View("Index", borrowedBooksList);
-        //}
-
-        //public ActionResult BooksByAuthor(string firstName, string lastName, string fatherName)
-        //{
-        //    var employee = employeeRepository.GetEmployeeByName(firstName, lastName, fatherName);
-
-        //    if (employee != null)
-        //    {
-        //        var borrowedBooksList = borrowedBooks.GetAll().Where(b => b.EmployeeId == employee.EmployeeId);
-        //        SaveFilterToCookie("AuthorFilter", $"{firstName}|{lastName}|{fatherName}");
-
-        //        return View("Index", borrowedBooksList);
-        //    }
-
-        //    return RedirectToAction("Index");
-        //}
-
-        //public ActionResult BooksByGenre(string genreName)
-        //{
-        //    var books = bookRepository.GetBooksByGenre(genreName);
-
-        //    if (books.Any())
-        //    {
-        //        var borrowedBooksList = borrowedBooks.GetAll().Where(b => books.Select(book => book.BookId).Contains(b.BookId));
-        //        SaveFilterToCookie("GenreFilter", genreName);
-
-        //        return View("Index", borrowedBooksList);
-        //    }
-
-        //    return RedirectToAction("Index");
-        //}
-
-        private void SaveFilterToCookie(string cookieName, object value)
+        [HttpPost]
+        public ActionResult Index(int pageNumber = 1, int pageSize = 10)
         {
-            var filterValue = value?.ToString() ?? string.Empty;
-            HttpContext.Response.Cookies.Append(cookieName, filterValue, new CookieOptions
+            string? returnStatusString = Request.Cookies["returnStatus"];
+            string? authorIdString = Request.Cookies["authorId"];
+            string? genreIdString = Request.Cookies["genreId"];
+
+            if (bool.TryParse(returnStatusString, out var returnStatus)
+                && int.TryParse(authorIdString, out var authorId)
+                && int.TryParse(genreIdString, out var genreId))
             {
-                Expires = DateTime.Now.AddMinutes(15) // Set expiration time for the cookie
-            });
+                ViewBag.ReturnStatus = returnStatus;
+                ViewBag.AuthorId = authorId;
+                ViewBag.GenreId = genreId;
+
+                return View(borrowedBooks.GetFilteredPage(pageNumber, pageSize, returnStatus, authorId, genreId));
+            }
+
+            return View("Error");
         }
 
         public ActionResult Create()
