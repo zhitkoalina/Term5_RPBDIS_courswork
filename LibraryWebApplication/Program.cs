@@ -1,5 +1,7 @@
-using LibraryLib;
+using LibraryWebApplication.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
 namespace LibraryWebApplication
 {
     public class Program
@@ -15,8 +17,15 @@ namespace LibraryWebApplication
             builder.Services.AddDbContext<LibraryContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            // Add distributed memory cache
-            builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<LibraryContext>()
+                .AddDefaultTokenProviders();
+
+            builder.Services.ConfigureApplicationCookie(options => {
+                options.LoginPath = "/Account/Login";
+            });
+
+            builder.Services.AddResponseCaching();
 
             var app = builder.Build();
 
@@ -33,6 +42,7 @@ namespace LibraryWebApplication
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

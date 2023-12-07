@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using LibraryWebApplication.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace LibraryLib;
+namespace LibraryWebApplication.Models;
 
-public partial class LibraryContext : DbContext
+public partial class LibraryContext : IdentityDbContext<IdentityUser>
 {
     public LibraryContext()
     {
@@ -40,6 +41,8 @@ public partial class LibraryContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<Author>(entity =>
         {
             entity.HasKey(e => e.AuthorId).HasName("PK__Authors__70DAFC147B5B2428");
