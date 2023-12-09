@@ -51,82 +51,6 @@ namespace LibraryWebApplication.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Authors",
-                columns: table => new
-                {
-                    AuthorID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    FatherName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__Authors__70DAFC147B5B2428", x => x.AuthorID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Cities",
-                columns: table => new
-                {
-                    CityID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__Cities__F2D21A961823DEBA", x => x.CityID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Genres",
-                columns: table => new
-                {
-                    GenreID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__Genres__0385055EE172CA91", x => x.GenreID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Positions",
-                columns: table => new
-                {
-                    PositionID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__Position__60BB9A5918DD9552", x => x.PositionID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Readers",
-                columns: table => new
-                {
-                    ReaderID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    FatherName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    BirthDate = table.Column<DateTime>(type: "date", nullable: true),
-                    Gender = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    PassportData = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__Readers__8E67A581A81769D7", x => x.ReaderID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -232,114 +156,6 @@ namespace LibraryWebApplication.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Publishers",
-                columns: table => new
-                {
-                    PublisherID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    CityID = table.Column<int>(type: "int", nullable: true),
-                    Adress = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__Publishe__4C657E4B07002395", x => x.PublisherID);
-                    table.ForeignKey(
-                        name: "FK__Publisher__CityI__4BAC3F29",
-                        column: x => x.CityID,
-                        principalTable: "Cities",
-                        principalColumn: "CityID");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Employees",
-                columns: table => new
-                {
-                    EmployeeID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    FatherName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    PositionID = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__Employee__7AD04FF1F36ECC3A", x => x.EmployeeID);
-                    table.ForeignKey(
-                        name: "FK__Employees__Posit__5AEE82B9",
-                        column: x => x.PositionID,
-                        principalTable: "Positions",
-                        principalColumn: "PositionID");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Books",
-                columns: table => new
-                {
-                    BookID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ISBN = table.Column<long>(type: "bigint", nullable: true),
-                    Title = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    AuthorID = table.Column<int>(type: "int", nullable: true),
-                    PublisherID = table.Column<int>(type: "int", nullable: true),
-                    PublishYear = table.Column<int>(type: "int", nullable: true),
-                    GenreID = table.Column<int>(type: "int", nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(10,2)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__Books__3DE0C227B222A29E", x => x.BookID);
-                    table.ForeignKey(
-                        name: "FK__Books__AuthorID__52593CB8",
-                        column: x => x.AuthorID,
-                        principalTable: "Authors",
-                        principalColumn: "AuthorID");
-                    table.ForeignKey(
-                        name: "FK__Books__GenreID__5441852A",
-                        column: x => x.GenreID,
-                        principalTable: "Genres",
-                        principalColumn: "GenreID");
-                    table.ForeignKey(
-                        name: "FK__Books__Publisher__534D60F1",
-                        column: x => x.PublisherID,
-                        principalTable: "Publishers",
-                        principalColumn: "PublisherID");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BorrowedBooks",
-                columns: table => new
-                {
-                    BorrowID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BookID = table.Column<int>(type: "int", nullable: true),
-                    ReaderID = table.Column<int>(type: "int", nullable: true),
-                    EmployeeID = table.Column<int>(type: "int", nullable: true),
-                    BorrowDate = table.Column<DateTime>(type: "date", nullable: true),
-                    ReturnDate = table.Column<DateTime>(type: "date", nullable: true),
-                    ReturnStatus = table.Column<bool>(type: "bit", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__Borrowed__4295F85F8875C267", x => x.BorrowID);
-                    table.ForeignKey(
-                        name: "FK__BorrowedB__BookI__5DCAEF64",
-                        column: x => x.BookID,
-                        principalTable: "Books",
-                        principalColumn: "BookID");
-                    table.ForeignKey(
-                        name: "FK__BorrowedB__Emplo__5FB337D6",
-                        column: x => x.EmployeeID,
-                        principalTable: "Employees",
-                        principalColumn: "EmployeeID");
-                    table.ForeignKey(
-                        name: "FK__BorrowedB__Reade__5EBF139D",
-                        column: x => x.ReaderID,
-                        principalTable: "Readers",
-                        principalColumn: "ReaderID");
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -378,46 +194,6 @@ namespace LibraryWebApplication.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Books_AuthorID",
-                table: "Books",
-                column: "AuthorID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Books_GenreID",
-                table: "Books",
-                column: "GenreID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Books_PublisherID",
-                table: "Books",
-                column: "PublisherID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BorrowedBooks_BookID",
-                table: "BorrowedBooks",
-                column: "BookID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BorrowedBooks_EmployeeID",
-                table: "BorrowedBooks",
-                column: "EmployeeID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BorrowedBooks_ReaderID",
-                table: "BorrowedBooks",
-                column: "ReaderID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Employees_PositionID",
-                table: "Employees",
-                column: "PositionID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Publishers_CityID",
-                table: "Publishers",
-                column: "CityID");
         }
 
         /// <inheritdoc />
@@ -439,37 +215,10 @@ namespace LibraryWebApplication.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "BorrowedBooks");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Books");
-
-            migrationBuilder.DropTable(
-                name: "Employees");
-
-            migrationBuilder.DropTable(
-                name: "Readers");
-
-            migrationBuilder.DropTable(
-                name: "Authors");
-
-            migrationBuilder.DropTable(
-                name: "Genres");
-
-            migrationBuilder.DropTable(
-                name: "Publishers");
-
-            migrationBuilder.DropTable(
-                name: "Positions");
-
-            migrationBuilder.DropTable(
-                name: "Cities");
         }
     }
 }
