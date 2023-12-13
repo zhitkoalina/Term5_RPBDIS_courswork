@@ -1,6 +1,7 @@
 ﻿using LibraryWebApplication.Interfaces;
 using LibraryWebApplication.Models;
 using LibraryWebApplication.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryWebApplication.Controllers
@@ -14,17 +15,26 @@ namespace LibraryWebApplication.Controllers
             positions = new PositionRepository();
         }
 
+
+
+        [HttpGet]
         [ResponseCache(Duration = 268)]
         public ActionResult Index()
         {
             return View(positions.GetAll());
         }
 
+
+
+        [HttpGet]
+        [Authorize]
         public ActionResult Create()
         {
             return View();
         }
+
         [HttpPost]
+        [Authorize]
         public ActionResult Create(Position position)
         {
             try
@@ -44,12 +54,18 @@ namespace LibraryWebApplication.Controllers
             }
         }
 
+
+
+        [HttpGet]
+        [Authorize]
         public ActionResult Edit(int id)
         {
             Position position = positions.GetItem(id);
             return View(position);
         }
+
         [HttpPost]
+        [Authorize]
         public ActionResult Edit(Position position)
         {
             try
@@ -69,13 +85,18 @@ namespace LibraryWebApplication.Controllers
             }
         }
 
+
+
         [HttpGet]
+        [Authorize]
         public ActionResult Delete(int id)
         {
             Position b = positions.GetItem(id);
             return View(b);
         }
+
         [HttpPost, ActionName("Delete")]
+        [Authorize]
         public ActionResult DeleteConfirmed(int id)
         {
             try

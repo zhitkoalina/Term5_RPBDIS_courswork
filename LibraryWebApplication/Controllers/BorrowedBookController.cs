@@ -1,6 +1,7 @@
 ﻿using LibraryWebApplication.Interfaces;
 using LibraryWebApplication.Models;
 using LibraryWebApplication.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryWebApplication.Controllers
@@ -14,6 +15,9 @@ namespace LibraryWebApplication.Controllers
             borrowedBooks = new BorrowedBookRepository();
         }
 
+
+
+        [HttpGet]
         [ResponseCache(Duration = 268)]
         public ActionResult Index(int pageNumber = 1, int pageSize = 10, bool? returnStatus = null, int? authorId = null, int? genreId = null)
         {
@@ -33,6 +37,7 @@ namespace LibraryWebApplication.Controllers
 
             return View(borrowedBooks.GetFilteredPage(pageNumber, pageSize, returnStatus, authorId, genreId));
         }
+
         [HttpPost]
         public ActionResult Index(int pageNumber = 1, int pageSize = 10)
         {
@@ -54,6 +59,10 @@ namespace LibraryWebApplication.Controllers
             return View("Error");
         }
 
+
+
+        [HttpGet]
+        [Authorize]
         public ActionResult Create()
         {
             ViewBag.BookOptions = borrowedBooks.GetBooksNames();
@@ -61,7 +70,9 @@ namespace LibraryWebApplication.Controllers
             ViewBag.ReaderOptions = borrowedBooks.GetReadersNames();
             return View();
         }
+
         [HttpPost]
+        [Authorize]
         public ActionResult Create(BorrowedBook borrowedBook)
         {
             try
@@ -85,6 +96,10 @@ namespace LibraryWebApplication.Controllers
             }
         }
 
+
+
+        [HttpGet]
+        [Authorize]
         public ActionResult Edit(int id)
         {
             BorrowedBook borrowedBook = borrowedBooks.GetItem(id);
@@ -93,7 +108,9 @@ namespace LibraryWebApplication.Controllers
             ViewBag.ReaderOptions = borrowedBooks.GetReadersNames();
             return View(borrowedBook);
         }
+
         [HttpPost]
+        [Authorize]
         public ActionResult Edit(BorrowedBook borrowedBook)
         {
             try
@@ -117,13 +134,18 @@ namespace LibraryWebApplication.Controllers
             }
         }
 
+
+
         [HttpGet]
+        [Authorize]
         public ActionResult Delete(int id)
         {
             BorrowedBook b = borrowedBooks.GetItem(id);
             return View(b);
         }
+
         [HttpPost, ActionName("Delete")]
+        [Authorize]
         public ActionResult DeleteConfirmed(int id)
         {
             try

@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@{
+    var users = ViewBag.Users as List<IdentityUser>;
+}
+
+<h2>Users</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tbody>
+        @foreach (var user in users) {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>@string.Join("", ViewData[$"Roles_{user.Id}"] as IList<string>)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@user.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@user.Id">Delete</a> |
+                    <a asp-action="ResetPassword" asp-route-id="@user.Id">Reset Password</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

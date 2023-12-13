@@ -1,6 +1,7 @@
 ﻿using LibraryWebApplication.Interfaces;
 using LibraryWebApplication.Models;
 using LibraryWebApplication.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryWebApplication.Controllers
@@ -14,6 +15,9 @@ namespace LibraryWebApplication.Controllers
             publishers = new PublisherRepository();
         }
 
+
+
+        [HttpGet]
         [ResponseCache(Duration = 268)]
         public ActionResult Index(int pageNumber = 1, int pageSize = 10)
         {
@@ -24,12 +28,18 @@ namespace LibraryWebApplication.Controllers
             return View(publishers.GetPage(pageNumber, pageSize));
         }
 
+
+
+        [HttpGet]
+        [Authorize]
         public ActionResult Create()
         {
             ViewBag.CityOptions = publishers.GetCitiesNames();
             return View();
         }
+
         [HttpPost]
+        [Authorize]
         public ActionResult Create(Publisher publisher)
         {
             try
@@ -51,6 +61,10 @@ namespace LibraryWebApplication.Controllers
             }
         }
 
+
+
+        [HttpGet]
+        [Authorize]
         public ActionResult Edit(int id)
         {
             Publisher publisher = publishers.GetItem(id);
@@ -59,6 +73,7 @@ namespace LibraryWebApplication.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult Edit(Publisher publisher)
         {
             try
@@ -80,13 +95,18 @@ namespace LibraryWebApplication.Controllers
             }
         }
 
+
+
         [HttpGet]
+        [Authorize]
         public ActionResult Delete(int id)
         {
             Publisher b = publishers.GetItem(id);
             return View(b);
         }
+
         [HttpPost, ActionName("Delete")]
+        [Authorize]
         public ActionResult DeleteConfirmed(int id)
         {
             try

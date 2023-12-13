@@ -23,6 +23,7 @@ namespace LibraryWebApplication
 
             builder.Services.ConfigureApplicationCookie(options => {
                 options.LoginPath = "/Account/Login";
+                options.AccessDeniedPath = "/Account/Login";
             });
 
             builder.Services.AddResponseCaching();
@@ -49,7 +50,24 @@ namespace LibraryWebApplication
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
+            using (var scope = app.Services.CreateScope())
+            {
+                var serviceProvider = scope.ServiceProvider;
+                var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+                EnsureRoleExists("Admin", roleManager).Wait();
+                EnsureRoleExists("User", roleManager).Wait();
+            }
+
             app.Run();
+
+            async Task EnsureRoleExists(string roleName, RoleManager<IdentityRole> roleManager)
+            {
+                if (!await roleManager.RoleExistsAsync(roleName))
+                {
+                    await roleManager.CreateAsync(new IdentityRole(roleName));
+                }
+            }
         }
     }
 }

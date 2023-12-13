@@ -1,6 +1,7 @@
 ﻿using LibraryWebApplication.Interfaces;
 using LibraryWebApplication.Models;
 using LibraryWebApplication.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryWebApplication.Controllers
@@ -14,6 +15,9 @@ namespace LibraryWebApplication.Controllers
             employees = new EmployeeRepository();
         }
 
+
+
+        [HttpGet]
         [ResponseCache(Duration = 268)]
         public ActionResult Index(int pageNumber = 1, int pageSize = 10, string? firstName = null, string? lastName = null, string? fatherName = null, int? positionId = null)
         {
@@ -46,6 +50,7 @@ namespace LibraryWebApplication.Controllers
 
             return View(employees.GetFilteredPage(pageNumber, pageSize, firstName, lastName, fatherName, positionId));
         }
+
         [HttpPost]
         public ActionResult Index(int pageNumber = 1, int pageSize = 10)
         {
@@ -57,12 +62,18 @@ namespace LibraryWebApplication.Controllers
             return View(employees.GetFilteredPage(pageNumber, pageSize, firstNameFilter, lastNameFilter, fatherNameFilter, positionIdFilter));
         }
 
+
+
+        [HttpGet]
+        [Authorize]
         public ActionResult Create()
         {
             ViewBag.PositionOptions = employees.GetPositionsNames();
             return View();
         }
+
         [HttpPost]
+        [Authorize]
         public ActionResult Create(Employee employee)
         {
             try
@@ -84,13 +95,19 @@ namespace LibraryWebApplication.Controllers
             }
         }
 
+
+
+        [HttpGet]
+        [Authorize]
         public ActionResult Edit(int id)
         {
             Employee employee = employees.GetItem(id);
             ViewBag.PositionOptions = employees.GetPositionsNames();
             return View(employee);
         }
+
         [HttpPost]
+        [Authorize]
         public ActionResult Edit(Employee employee)
         {
             try
@@ -112,13 +129,18 @@ namespace LibraryWebApplication.Controllers
             }
         }
 
+
+
         [HttpGet]
+        [Authorize]
         public ActionResult Delete(int id)
         {
             Employee b = employees.GetItem(id);
             return View(b);
         }
+
         [HttpPost, ActionName("Delete")]
+        [Authorize]
         public ActionResult DeleteConfirmed(int id)
         {
             try

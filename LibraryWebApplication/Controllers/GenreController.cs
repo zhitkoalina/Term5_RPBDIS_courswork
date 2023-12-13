@@ -1,6 +1,7 @@
 ﻿using LibraryWebApplication.Interfaces;
 using LibraryWebApplication.Models;
 using LibraryWebApplication.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
@@ -20,17 +21,26 @@ namespace LibraryWebApplication.Controllers
             genres = new GenreRepository();
         }
 
+
+
+        [HttpGet]
         [ResponseCache(Duration = 268)]
         public ActionResult Index()
         {
             return View(genres.GetAll());
         }
 
+
+
+        [HttpGet]
+        [Authorize]
         public ActionResult Create()
         {
             return View();
         }
+
         [HttpPost]
+        [Authorize]
         public ActionResult Create(Genre genre)
         {
             try
@@ -50,12 +60,18 @@ namespace LibraryWebApplication.Controllers
             }
         }
 
+
+
+        [HttpGet]
+        [Authorize]
         public ActionResult Edit(int id)
         {
             Genre genre = genres.GetItem(id);
             return View(genre);
         }
+
         [HttpPost]
+        [Authorize]
         public ActionResult Edit(Genre genre)
         {
             try
@@ -75,13 +91,18 @@ namespace LibraryWebApplication.Controllers
             }
         }
 
+
+
         [HttpGet]
+        [Authorize]
         public ActionResult Delete(int id)
         {
             Genre b = genres.GetItem(id);
             return View(b);
         }
+
         [HttpPost, ActionName("Delete")]
+        [Authorize]
         public ActionResult DeleteConfirmed(int id)
         {
             try

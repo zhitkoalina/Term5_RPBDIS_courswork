@@ -1,6 +1,7 @@
 ﻿using LibraryWebApplication.Interfaces;
 using LibraryWebApplication.Models;
 using LibraryWebApplication.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryWebApplication.Controllers
@@ -13,6 +14,8 @@ namespace LibraryWebApplication.Controllers
         {
             books = new BookRepository();
         }
+
+
 
         [ResponseCache(Duration = 268)]
         public ActionResult Index(int pageNumber = 1, int pageSize = 10)
@@ -37,6 +40,8 @@ namespace LibraryWebApplication.Controllers
         }
 
 
+        [HttpGet]
+        [Authorize]
         public ActionResult Create()
         {
             ViewBag.AuthorOptions = books.GetAuthorsNames();
@@ -44,7 +49,9 @@ namespace LibraryWebApplication.Controllers
             ViewBag.PublisherOptions = books.GetPublishersNames();
             return View();
         }
+
         [HttpPost]
+        [Authorize]
         public ActionResult Create(Book book)
         {
             try
@@ -68,6 +75,10 @@ namespace LibraryWebApplication.Controllers
             }
         }
 
+
+
+        [HttpGet]
+        [Authorize]
         public ActionResult Edit(int id)
         {
             Book book = books.GetItem(id);
@@ -76,7 +87,9 @@ namespace LibraryWebApplication.Controllers
             ViewBag.PublisherOptions = books.GetPublishersNames();
             return View(book);
         }
+
         [HttpPost]
+        [Authorize]
         public ActionResult Edit(Book book)
         {
             try
@@ -100,13 +113,18 @@ namespace LibraryWebApplication.Controllers
             }
         }
 
+
+
         [HttpGet]
+        [Authorize]
         public ActionResult Delete(int id)
         {
             Book b = books.GetItem(id);
             return View(b);
         }
+
         [HttpPost, ActionName("Delete")]
+        [Authorize]
         public ActionResult DeleteConfirmed(int id)
         {
             try

@@ -1,6 +1,7 @@
 ﻿using LibraryWebApplication.Interfaces;
 using LibraryWebApplication.Models;
 using LibraryWebApplication.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
@@ -20,17 +21,25 @@ namespace LibraryWebApplication.Controllers
             authors = new AuthorRepository();
         }
 
+
+
         [ResponseCache(Duration = 268)]
         public ActionResult Index()
         {
             return View(authors.GetAll());
         }
 
+
+
+        [HttpGet]
+        [Authorize]
         public ActionResult Create()
         {
             return View();
         }
+
         [HttpPost]
+        [Authorize]
         public ActionResult Create(Author author)
         {
             try
@@ -50,12 +59,18 @@ namespace LibraryWebApplication.Controllers
             }
         }
 
+
+
+        [HttpGet]
+        [Authorize]
         public ActionResult Edit(int id)
         {
             Author author = authors.GetItem(id);
             return View(author);
         }
+
         [HttpPost]
+        [Authorize]
         public ActionResult Edit(Author author)
         {
             try
@@ -75,13 +90,18 @@ namespace LibraryWebApplication.Controllers
             }
         }
 
+
+
         [HttpGet]
+        [Authorize]
         public ActionResult Delete(int id)
         {
             Author b = authors.GetItem(id);
             return View(b);
         }
+
         [HttpPost, ActionName("Delete")]
+        [Authorize]
         public ActionResult DeleteConfirmed(int id)
         {
             try
