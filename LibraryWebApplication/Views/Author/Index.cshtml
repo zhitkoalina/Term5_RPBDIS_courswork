@@ -6,6 +6,26 @@
     <a asp-action="Create">Create New</a>
 </p>
 
+<div>
+    <form method="get" asp-action="Index">
+        <div class="form-group">
+            <label for="FirstName">First Name:</label>
+            <input type="text" name="FirstName" value="@ViewBag.FirstName" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="LastName">Last Name:</label>
+            <input type="text" name="LastName" value="@ViewBag.LastName" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="FatherName">Father Name:</label>
+            <input type="text" name="FatherName" value="@ViewBag.FatherName" class="form-control" />
+        </div>
+        <div>
+            <button type="submit" class="custom-btn btn">Apply Filters</button>
+        </div>
+    </form>
+</div>
+
 <table class="table">
     <thead>
         <tr>

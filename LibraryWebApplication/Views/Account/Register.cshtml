@@ -1,10 +1,6 @@
 ﻿@model LibraryWebApplication.AccountViewModels.RegisterAccountViewModel
 
-@{
-    ViewData["Title"] = "Register";
-}
-
-<h2>@ViewData["Title"]</h2>
+<h2>Register</h2>
 <div asp-validation-summary="All" class="text-danger"></div>
 <form asp-action="Register" method="post">
     <div class="form-group">
@@ -31,5 +27,5 @@
         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">Register</button>
+    <button type="submit" class="custom-btn btn">Register</button>
 </form>

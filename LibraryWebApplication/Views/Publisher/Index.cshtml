@@ -6,6 +6,30 @@
     <a asp-action="Create">Create New</a>
 </p>
 
+<div>
+    <form method="get" asp-action="Index">
+        <div class="form-group">
+            <label for="Name">Name:</label>
+            <input type="text" name="Name" value="@ViewBag.Name" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="CityId">City:</label>
+            <select name="CityId" id="CityId" class="form-control">
+                <option value="">All Cities</option>
+                @*@foreach (var city in ViewBag.Cities)
+                {
+                    <option value="@city.Value" selected="@(ViewBag.CityId != null && ViewBag.CityId.ToString() == city.Value)">
+                        @city.Text
+                    </option>
+                }*@
+            </select>
+        </div>
+        <div>
+            <button type="submit" class="custom-btn btn">Apply Filters</button>
+        </div>
+    </form>
+</div>
+
 <table class="table">
     <thead>
         <tr>

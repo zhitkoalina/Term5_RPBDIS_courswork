@@ -1,6 +1,6 @@
 ﻿@model LibraryWebApplication.Models.Author
 
-<h2>Delete Author</h2>
+<h2 class="text-error">Delete Author</h2>
 
 <p>Are you sure you want to delete this author?</p>
 
@@ -21,7 +21,12 @@
         </dd>
     </dl>
     <form asp-action="Delete" asp-route-id="@Model.AuthorId" method="post">
-        <input type="submit" value="Delete" class="btn btn-danger" />
-        <a asp-action="Index" class="btn btn-default">Cancel</a>
+        <button type="submit" class="custom-btn-reverse btn">Delete</button>
     </form>
 </div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+

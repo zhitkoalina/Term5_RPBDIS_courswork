@@ -1,5 +1,9 @@
-﻿using LibraryWebApplication.Models;
+﻿using LibraryWebApplication.Interfaces;
+using LibraryWebApplication.Models;
+using LibraryWebApplication.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace LibraryWebApplication.Controllers
@@ -8,18 +12,54 @@ namespace LibraryWebApplication.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        IAuthorRepository authors;
+        IBookRepository books;
+        IBorrowedBookRepository borrowedBooks;
+        ICityRepository cities;
+        IEmployeeRepository employees;
+        IGenreRepository genres;
+        IPositionRepository positions;
+        IPublisherRepository publishers;
+        IReaderRepository readers;
+
+
+        public HomeController(ILogger<HomeController> logger, UserManager<IdentityUser> userManager)
         {
             _logger = logger;
+
+            authors = new AuthorRepository();
+            books = new BookRepository();
+            borrowedBooks = new BorrowedBookRepository();
+            cities = new CityRepository();
+            employees = new EmployeeRepository();
+            genres = new GenreRepository();
+            positions = new PositionRepository();
+            publishers = new PublisherRepository();
+            readers = new ReaderRepository();
         }
 
         public IActionResult Index()
         {
-            return View();
-        }
+            var authorsCount = authors.GetCount();
+            var booksCount = books.GetCount();
+            var borrowedBooksCount = borrowedBooks.GetCount();
+            var citiesCount = cities.GetCount();
+            var employeesCount = employees.GetCount();
+            var genresCount = genres.GetCount();
+            var positionsCount = positions.GetCount();
+            var publishersCount = publishers.GetCount();
+            var readersCount = readers.GetCount();
 
-        public IActionResult Privacy()
-        {
+            ViewBag.AuthorsCount = authorsCount;
+            ViewBag.BooksCount = booksCount;
+            ViewBag.BorrowedBooksCount = borrowedBooksCount;
+            ViewBag.CitiesCount = citiesCount;
+            ViewBag.EmployeesCount = employeesCount;
+            ViewBag.GenresCount = genresCount;
+            ViewBag.PositionsCount = positionsCount;
+            ViewBag.PublishersCount = publishersCount;
+            ViewBag.ReadersCount = readersCount;
+
             return View();
         }
 

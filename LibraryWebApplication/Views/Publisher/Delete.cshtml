@@ -1,6 +1,6 @@
 ﻿@model LibraryWebApplication.Models.Publisher
 
-<h2>Delete Publisher</h2>
+<h2 class="text-error">Delete Publisher</h2>
 
 <p>Are you sure you want to delete this publisher?</p>
 
@@ -14,13 +14,11 @@
         </dd>
     </dl>
     <form asp-action="Delete" asp-route-id="@Model.PublisherId" method="post">
-        <input type="submit" value="Delete" class="btn btn-danger" />
-        <a asp-action="Index" class="btn btn-default">Cancel</a>
+        <button type="submit" class="custom-btn-reverse btn">Delete</button> 
     </form>
 </div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-    }
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
