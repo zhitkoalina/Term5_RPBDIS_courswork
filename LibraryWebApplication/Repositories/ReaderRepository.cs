@@ -18,6 +18,33 @@ namespace LibraryWebApplication.Repositories
             return db.Readers;
         }
 
+        public IEnumerable<Reader> GetFilteredAll(string? firstName, string? lastName, string? fatherName, string? phoneNumber)
+        {
+            IEnumerable<Reader> readers = GetAll();
+
+            if (!string.IsNullOrEmpty(firstName))
+            {
+                readers = readers.Where(reader => reader.FirstName.Contains(firstName));
+            }
+
+            if (!string.IsNullOrEmpty(lastName))
+            {
+                readers = readers.Where(reader => reader.LastName.Contains(lastName));
+            }
+
+            if (!string.IsNullOrEmpty(fatherName))
+            {
+                readers = readers.Where(reader => reader.FatherName.Contains(fatherName));
+            }
+
+            if (!string.IsNullOrEmpty(phoneNumber))
+            {
+                readers = readers.Where(reader => reader.PhoneNumber.StartsWith(phoneNumber));
+            }
+
+            return readers;
+        }
+
         public int GetCount()
         {
             return db.Readers.Count();

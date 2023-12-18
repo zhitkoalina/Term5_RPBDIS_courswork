@@ -102,6 +102,7 @@ public class AccountController : Controller
 
 
     [HttpGet]
+    [ResponseCache]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Index()
     {

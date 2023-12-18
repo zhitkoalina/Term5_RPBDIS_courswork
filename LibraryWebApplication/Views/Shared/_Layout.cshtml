@@ -20,19 +20,19 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Index", "Reader")">Readers</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Index", "City")">Cities</a>
+                            <a class="nav-link" href="@Url.Action("Index", "City", new { Name = ViewBag.citiesName })">Cities</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="@Url.Action("Index", "Genre")">Genres</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "Position")">Positions</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="@Url.Action("Index", "Author")">Authors</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Index", "Position")">Positions</a>
+                            <a class="nav-link" href="@Url.Action("Index", "Reader")">Readers</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="@Url.Action("Index", "Publisher")">Publishers</a>

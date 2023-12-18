@@ -240,8 +240,13 @@ svg {
         color: var(--white-color);
     }
 
+input[type='checkbox'] {
+    accent-color: var(--secondary-color);
+}
 
-
+/*---------------------------------------
+  TEXT ERROR              
+-----------------------------------------*/
 .text-danger {
     color: var(--primary-color) !important;
 }
@@ -250,10 +255,9 @@ svg {
     color: var(--primary-color);
 }
 
-input[type='checkbox'] {
-    accent-color: var(--secondary-color);
-}
-
+/*---------------------------------------
+  EXTRA              
+-----------------------------------------*/
 .custom-margin {
     margin-top: 140px;
 }

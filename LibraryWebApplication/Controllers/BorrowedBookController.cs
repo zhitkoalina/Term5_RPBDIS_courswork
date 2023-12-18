@@ -18,9 +18,13 @@ namespace LibraryWebApplication.Controllers
 
 
         [HttpGet]
-        [ResponseCache(Duration = 268)]
-        public ActionResult Index(int pageNumber = 1, int pageSize = 10, bool? returnStatus = null, int? authorId = null, int? genreId = null)
+        [ResponseCache]
+        public ActionResult Index(int pageNumber = 1, int pageSize = 10)
         {
+            bool? returnStatus = bool.TryParse(Request.Cookies["borrowedBooksReturnStatus"], out var parsedReturnStatus) ? parsedReturnStatus : (bool?)null;
+            int? authorId = int.TryParse(Request.Cookies["borrowedBooksAuthorId"], out var parsedAuthorId) ? parsedAuthorId : (int?)null;
+            int? genreId = int.TryParse(Request.Cookies["borrowedBooksGenreId"], out var parsedGenreId) ? parsedGenreId : (int?)null;
+
             ViewBag.PageNumber = pageNumber;
             ViewBag.PageSize = pageSize;
             ViewBag.Authors = borrowedBooks.GetAuthorsNames();
@@ -31,32 +35,60 @@ namespace LibraryWebApplication.Controllers
             ViewBag.AuthorId = authorId;
             ViewBag.GenreId = genreId;
 
-            Response.Cookies.Append("returnStatus", returnStatus?.ToString() ?? "");
-            Response.Cookies.Append("authorId", authorId?.ToString() ?? "");
-            Response.Cookies.Append("genreId", genreId?.ToString() ?? "");
-
             return View(borrowedBooks.GetFilteredPage(pageNumber, pageSize, returnStatus, authorId, genreId));
         }
 
         [HttpPost]
-        public ActionResult Index(int pageNumber = 1, int pageSize = 10)
+        [ResponseCache]
+        public ActionResult Index(int pageNumber = 1, int pageSize = 10, bool? returnStatus = null, int? authorId = null, int? genreId = null)
         {
-            string? returnStatusString = Request.Cookies["returnStatus"];
-            string? authorIdString = Request.Cookies["authorId"];
-            string? genreIdString = Request.Cookies["genreId"];
-
-            if (bool.TryParse(returnStatusString, out var returnStatus)
-                && int.TryParse(authorIdString, out var authorId)
-                && int.TryParse(genreIdString, out var genreId))
+            if (returnStatus.HasValue)
             {
-                ViewBag.ReturnStatus = returnStatus;
-                ViewBag.AuthorId = authorId;
-                ViewBag.GenreId = genreId;
-
-                return View(borrowedBooks.GetFilteredPage(pageNumber, pageSize, returnStatus, authorId, genreId));
+                Response.Cookies.Append("borrowedBooksReturnStatus", returnStatus.Value.ToString());
+            }
+            else
+            {
+                if (Request.Cookies.ContainsKey("borrowedBooksReturnStatus"))
+                {
+                    Response.Cookies.Delete("borrowedBooksReturnStatus");
+                }
             }
 
-            return View("Error");
+            if (authorId.HasValue)
+            {
+                Response.Cookies.Append("borrowedBooksAuthorId", authorId.ToString());
+            }
+            else
+            {
+                if (Request.Cookies.ContainsKey("borrowedBooksAuthorId"))
+                {
+                    Response.Cookies.Delete("borrowedBooksAuthorId");
+                }
+            }
+
+            if (genreId.HasValue)
+            {
+                Response.Cookies.Append("borrowedBooksGenreId", genreId.ToString());
+            }
+            else
+            {
+                if (Request.Cookies.ContainsKey("borrowedBooksGenreId"))
+                {
+                    Response.Cookies.Delete("borrowedBooksGenreId");
+                }
+            }
+
+            ViewBag.PageNumber = pageNumber;
+            ViewBag.PageSize = pageSize;
+            ViewBag.Authors = borrowedBooks.GetAuthorsNames();
+            ViewBag.Genres = borrowedBooks.GetGenresNames();
+            ViewBag.TotalPages = (int)Math.Ceiling((decimal)borrowedBooks.GetFilteredCount(returnStatus, authorId, genreId) / pageSize);
+
+            ViewBag.ReturnStatus = returnStatus;
+            ViewBag.AuthorId = authorId;
+            ViewBag.GenreId = genreId;
+
+            return View(borrowedBooks.GetFilteredPage(pageNumber, pageSize, returnStatus, authorId, genreId));
         }
 
 

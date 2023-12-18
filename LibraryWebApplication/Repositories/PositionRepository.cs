@@ -17,6 +17,17 @@ namespace LibraryWebApplication.Repositories
         {
             return db.Positions;
         }
+
+        public IEnumerable<Position> GetFilteredAll(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return GetAll();
+            }
+
+            return db.Positions.Where(position => position.Name.Contains(name));
+        }
+
         public int GetCount()
         {
             return db.Positions.Count();

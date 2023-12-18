@@ -42,6 +42,60 @@ namespace LibraryWebApplication.Repositories
                 .ToList();
         }
 
+        public int GetFilteredCount(string? title, int? authorId, int? genreId)
+        {
+            IQueryable<Book> query = db.Books
+                .Include(b => b.Author)
+                .Include(b => b.Publisher)
+                .Include(b => b.Genre);
+
+            if (!string.IsNullOrEmpty(title))
+            {
+                query = query.Where(b => b.Title.Contains(title));
+            }
+
+            if (authorId.HasValue)
+            {
+                query = query.Where(b => b.Author.AuthorId == authorId.Value);
+            }
+
+            if (genreId.HasValue)
+            {
+                query = query.Where(b => b.Genre.GenreId == genreId.Value);
+            }
+
+            return query.Count();
+        }
+
+
+        public IEnumerable<Book> GetFilteredPage(int pageNumber, int pageSize, string? title, int? authorId, int? genreId)
+        {
+            IQueryable<Book> query = db.Books
+               .Include(b => b.Author)
+               .Include(b => b.Publisher)
+               .Include(b => b.Genre);
+
+            if (!string.IsNullOrEmpty(title))
+            {
+                query = query.Where(b => b.Title.Contains(title));
+            }
+
+            if (authorId.HasValue)
+            {
+                query = query.Where(b => b.Author.AuthorId == authorId.Value);
+            }
+
+            if (genreId.HasValue)
+            {
+                query = query.Where(b => b.Genre.GenreId == genreId.Value);
+            }
+
+            return query.OrderByDescending(b => b.PublisherId)
+                        .Skip((pageNumber - 1) * pageSize)
+                        .Take(pageSize)
+                        .ToList();
+        }
+
         public Book GetItem(int id)
         {
             return db.Books

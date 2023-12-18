@@ -7,7 +7,7 @@
 </p>
 
 <div>
-    <form method="get" asp-action="Index">
+    <form method="post" asp-action="Index">
         <div class="form-group">
             <label for="Name">Name:</label>
             <input type="text" name="Name" value="@ViewBag.Name" class="form-control" />
@@ -16,12 +16,12 @@
             <label for="CityId">City:</label>
             <select name="CityId" id="CityId" class="form-control">
                 <option value="">All Cities</option>
-                @*@foreach (var city in ViewBag.Cities)
+                @foreach (var city in ViewBag.Cities)
                 {
                     <option value="@city.Value" selected="@(ViewBag.CityId != null && ViewBag.CityId.ToString() == city.Value)">
                         @city.Text
                     </option>
-                }*@
+                }
             </select>
         </div>
         <div>

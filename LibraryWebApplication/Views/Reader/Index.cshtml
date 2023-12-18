@@ -7,7 +7,7 @@
 </p>
 
 <div>
-    <form method="get" asp-action="Index">
+    <form method="post" asp-action="Index">
         <div class="form-group">
             <label for="FirstName">First Name:</label>
             <input type="text" name="FirstName" value="@ViewBag.FirstName" class="form-control" />
@@ -40,13 +40,13 @@
                 @Html.DisplayNameFor(model => model.LastName)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.FatherName)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.BirthDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Gender)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PhoneNumber)
@@ -68,13 +68,13 @@
                     @Html.DisplayFor(modelItem => item.LastName)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.FatherName)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.BirthDate)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Gender)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Address)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.PhoneNumber)

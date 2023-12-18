@@ -6,7 +6,7 @@ namespace LibraryWebApplication.Interfaces
     public interface IPublisherRepository : IRepository<Publisher>
     {
         IEnumerable<SelectListItem> GetCitiesNames();
-        IEnumerable<Publisher> GetPage(int pageNumber, int pageSize);
-
+        IEnumerable<Publisher> GetFilteredPage(int pageNumber, int pageSize, string? name, int? cityId);
+        int GetFilteredCount(string? name, int? cityId);
     }
 }

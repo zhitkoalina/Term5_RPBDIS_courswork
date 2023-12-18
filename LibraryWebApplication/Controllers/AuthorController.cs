@@ -23,10 +23,66 @@ namespace LibraryWebApplication.Controllers
 
 
 
-        [ResponseCache(Duration = 268)]
+        [HttpGet]
+        [ResponseCache]
         public ActionResult Index()
         {
-            return View(authors.GetAll());
+            string firstName = Request.Cookies["authorsFirstName"];
+            string lastName = Request.Cookies["authorsLastName"];
+            string fatherName = Request.Cookies["authorsFatherName"];
+
+            ViewBag.FirstName = firstName;
+            ViewBag.LastName = lastName;
+            ViewBag.FatherName = fatherName;
+
+            return View(authors.GetFilteredAll(firstName, lastName, fatherName));
+        }
+
+        [HttpPost]
+        [ResponseCache]
+        public ActionResult Index(string? firstName = null, string? lastName = null, string? fatherName = null)
+        {
+            if (!string.IsNullOrEmpty(firstName))
+            {
+                Response.Cookies.Append("authorsFirstName", firstName);
+            }
+            else
+            {
+                if (Request.Cookies.ContainsKey("authorsFirstName"))
+                {
+                    Response.Cookies.Delete("authorsFirstName");
+                }
+            }
+
+            if (!string.IsNullOrEmpty(lastName))
+            {
+                Response.Cookies.Append("authorsLastName", lastName);
+            }
+            else
+            {
+                if (Request.Cookies.ContainsKey("authorsLastName"))
+                {
+                    Response.Cookies.Delete("authorsLastName");
+                }
+            }
+
+            if (!string.IsNullOrEmpty(fatherName))
+            {
+                Response.Cookies.Append("authorsFatherName", fatherName);
+            }
+            else
+            {
+                if (Request.Cookies.ContainsKey("authorsFatherName"))
+                {
+                    Response.Cookies.Delete("authorsFatherName");
+                }
+            }
+
+            ViewBag.FirstName = firstName;
+            ViewBag.LastName = lastName;
+            ViewBag.FatherName = fatherName;
+
+            return View("Index", authors.GetFilteredAll(firstName, lastName, fatherName));
         }
 
 

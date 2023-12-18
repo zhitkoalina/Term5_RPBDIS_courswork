@@ -8,5 +8,7 @@ namespace LibraryWebApplication.Interfaces
         IEnumerable<SelectListItem> GetAuthorsNames();
         IEnumerable<SelectListItem> GetGenresNames();
         IEnumerable<SelectListItem> GetPublishersNames();
+        IEnumerable<Book> GetFilteredPage(int pageNumber, int pageSize, string? title, int? authorId, int? genreId);
+        int GetFilteredCount(string? title, int? authorId, int? genreId);
     }
 }

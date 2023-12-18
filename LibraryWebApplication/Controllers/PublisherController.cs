@@ -18,16 +18,61 @@ namespace LibraryWebApplication.Controllers
 
 
         [HttpGet]
-        [ResponseCache(Duration = 268)]
+        [ResponseCache]
         public ActionResult Index(int pageNumber = 1, int pageSize = 10)
         {
+            string name = Request.Cookies["publishersName"];
+            int? cityId = int.TryParse(Request.Cookies["publishersCityId"], out var parsedCityId) ? parsedCityId : (int?)null;
+
             ViewBag.PageNumber = pageNumber;
             ViewBag.PageSize = pageSize;
-            ViewBag.TotalPages = (int)Math.Ceiling((double)publishers.GetCount() / pageSize);
+            ViewBag.Cities = publishers.GetCitiesNames();
+            ViewBag.TotalPages = (int)Math.Ceiling((decimal)publishers.GetFilteredCount(name, cityId) / pageSize);
 
-            return View(publishers.GetPage(pageNumber, pageSize));
+            ViewBag.Name = name;
+            ViewBag.CityId = cityId;
+
+            return View(publishers.GetFilteredPage(pageNumber, pageSize, name, cityId));
         }
 
+        [HttpPost]
+        [ResponseCache]
+        public ActionResult Index(int pageNumber = 1, int pageSize = 10, string? name = null, int? cityId = null)
+        {
+            if (!string.IsNullOrEmpty(name))
+            {
+                Response.Cookies.Append("publishersName", name);
+            }
+            else
+            {
+                if (Request.Cookies.ContainsKey("publishersName"))
+                {
+                    Response.Cookies.Delete("publishersName");
+                }
+            }
+
+            if (cityId.HasValue)
+            {
+                Response.Cookies.Append("publishersCityId", cityId.Value.ToString());
+            }
+            else
+            {
+                if (Request.Cookies.ContainsKey("publishersCityId"))
+                {
+                    Response.Cookies.Delete("publishersCityId");
+                }
+            }
+
+            ViewBag.PageNumber = pageNumber;
+            ViewBag.PageSize = pageSize;
+            ViewBag.Cities = publishers.GetCitiesNames();
+            ViewBag.TotalPages = (int)Math.Ceiling((decimal)publishers.GetFilteredCount(name, cityId) / pageSize);
+
+            ViewBag.Name = name;
+            ViewBag.CityId = cityId;
+
+            return View(publishers.GetFilteredPage(pageNumber, pageSize, name, cityId));
+        }
 
 
         [HttpGet]

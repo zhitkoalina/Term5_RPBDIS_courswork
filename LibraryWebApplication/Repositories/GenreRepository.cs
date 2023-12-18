@@ -18,6 +18,16 @@ namespace LibraryWebApplication.Repositories
             return db.Genres;
         }
 
+        public IEnumerable<Genre> GetFilteredAll(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return GetAll();
+            }
+
+            return db.Genres.Where(genre => genre.Name.Contains(name));
+        }
+
         public int GetCount()
         {
             return db.Genres.Count();

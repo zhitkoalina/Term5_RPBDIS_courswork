@@ -1,4 +1,4 @@
-namespace LibraryWebApplication.Models
+namespace LibraryWebApplication.Models.AccountViewModels
 {
     public class ErrorViewModel
     {

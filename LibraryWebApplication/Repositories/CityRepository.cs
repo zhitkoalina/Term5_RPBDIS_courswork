@@ -18,14 +18,19 @@ namespace LibraryWebApplication.Repositories
             return db.Cities;
         }
 
+        public IEnumerable<City> GetFilteredAll(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return GetAll();
+            }
+
+            return db.Cities.Where(city => city.Name.Contains(name));
+        }
+
         public int GetCount()
         {
             return db.Cities.Count();
-        }
-
-        public IEnumerable<City> GetPage(int pageNumber, int pageSize)
-        {
-            return db.Cities.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList(); ;
         }
 
         public City GetItem(int id)

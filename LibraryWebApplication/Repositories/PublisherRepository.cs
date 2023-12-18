@@ -37,6 +37,46 @@ namespace LibraryWebApplication.Repositories
                .ToList();
         }
 
+        public int GetFilteredCount(string? name, int? cityId)
+        {
+            IQueryable<Publisher> query = db.Publishers
+                .Include(b => b.City);
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                query = query.Where(b => b.Name.Contains(name));
+            }
+
+            if (cityId.HasValue)
+            {
+                query = query.Where(b => b.City.CityId == cityId.Value);
+            }
+
+            return query.Count();
+        }
+
+
+        public IEnumerable<Publisher> GetFilteredPage(int pageNumber, int pageSize, string? name, int? cityId)
+        {
+            IQueryable<Publisher> query = db.Publishers
+                .Include(b => b.City);
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                query = query.Where(b => b.Name.Contains(name));
+            }
+
+            if (cityId.HasValue)
+            {
+                query = query.Where(b => b.City.CityId == cityId.Value);
+            }
+
+            return query.OrderByDescending(b => b.PublisherId)
+                        .Skip((pageNumber - 1) * pageSize)
+                        .Take(pageSize)
+                        .ToList();
+        }
+
         public Publisher GetItem(int id)
         {
             return db.Publishers.Find(id);

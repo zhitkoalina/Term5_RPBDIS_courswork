@@ -1,5 +1,5 @@
 ﻿using LibraryWebApplication.Interfaces;
-using LibraryWebApplication.Models;
+using LibraryWebApplication.Models.AccountViewModels;
 using LibraryWebApplication.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

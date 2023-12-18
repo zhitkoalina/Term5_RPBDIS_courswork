@@ -24,10 +24,35 @@ namespace LibraryWebApplication.Controllers
 
 
         [HttpGet]
-        [ResponseCache(Duration = 268)]
+        [ResponseCache]
         public ActionResult Index()
         {
-            return View(genres.GetAll());
+            string name = Request.Cookies["genresName"];
+
+            ViewBag.Name = name;
+
+            return View(genres.GetFilteredAll(name));
+        }
+
+        [HttpPost]
+        [ResponseCache]
+        public ActionResult Index(string? name = null)
+        {
+            if (!string.IsNullOrEmpty(name))
+            {
+                Response.Cookies.Append("genresName", name);
+            }
+            else
+            {
+                if (Request.Cookies.ContainsKey("genresName"))
+                {
+                    Response.Cookies.Delete("genresName");
+                }
+            }
+
+            ViewBag.Name = name;
+
+            return View("Index", genres.GetFilteredAll(name));
         }
 
 

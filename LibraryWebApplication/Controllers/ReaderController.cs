@@ -24,10 +24,80 @@ namespace LibraryWebApplication.Controllers
 
 
         [HttpGet]
-        [ResponseCache(Duration = 268)]
+        [ResponseCache]
         public ActionResult Index()
         {
-            return View(readers.GetAll());
+            string firstName = Request.Cookies["readersFirstName"];
+            string lastName = Request.Cookies["readersLastName"];
+            string fatherName = Request.Cookies["readersFatherName"];
+            string phoneNumber = Request.Cookies["readersPhoneNumber"];
+
+            ViewBag.FirstName = firstName;
+            ViewBag.LastName = lastName;
+            ViewBag.FatherName = fatherName;
+            ViewBag.PhoneNumber = phoneNumber;
+
+            return View(readers.GetFilteredAll(firstName, lastName, fatherName, phoneNumber));
+        }
+
+        [HttpPost]
+        [ResponseCache]
+        public ActionResult Index(string? firstName = null, string? lastName = null, string? fatherName = null, string? phoneNumber = null)
+        {
+            if (!string.IsNullOrEmpty(firstName))
+            {
+                Response.Cookies.Append("readersFirstName", firstName);
+            }
+            else
+            {
+                if (Request.Cookies.ContainsKey("readersFirstName"))
+                {
+                    Response.Cookies.Delete("readersFirstName");
+                }
+            }
+
+            if (!string.IsNullOrEmpty(lastName))
+            {
+                Response.Cookies.Append("readersLastName", lastName);
+            }
+            else
+            {
+                if (Request.Cookies.ContainsKey("readersLastName"))
+                {
+                    Response.Cookies.Delete("readersLastName");
+                }
+            }
+
+            if (!string.IsNullOrEmpty(fatherName))
+            {
+                Response.Cookies.Append("readersFatherName", fatherName);
+            }
+            else
+            {
+                if (Request.Cookies.ContainsKey("readersFatherName"))
+                {
+                    Response.Cookies.Delete("readersFatherName");
+                }
+            }
+
+            if (!string.IsNullOrEmpty(phoneNumber))
+            {
+                Response.Cookies.Append("readersPhoneNumber", phoneNumber);
+            }
+            else
+            {
+                if (Request.Cookies.ContainsKey("readersPhoneNumber"))
+                {
+                    Response.Cookies.Delete("readersPhoneNumber");
+                }
+            }
+
+            ViewBag.FirstName = firstName;
+            ViewBag.LastName = lastName;
+            ViewBag.FatherName = fatherName;
+            ViewBag.PhoneNumber = phoneNumber;
+
+            return View("Index", readers.GetFilteredAll(firstName, lastName, fatherName, phoneNumber));
         }
 
 

@@ -3,6 +3,7 @@ using LibraryWebApplication.Models;
 using LibraryWebApplication.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace LibraryWebApplication.Controllers
 {
@@ -17,10 +18,36 @@ namespace LibraryWebApplication.Controllers
 
 
 
-        [ResponseCache(Duration = 268)]
+        [HttpGet]
+        [ResponseCache]
         public ActionResult Index()
         {
-            return View(cities.GetAll());
+            string name = Request.Cookies["citiesName"];
+
+            ViewBag.Name = name;
+
+            return View(cities.GetFilteredAll(name));
+        }
+
+        [HttpPost]
+        [ResponseCache]
+        public ActionResult Index(string? name = null)
+        {
+            if (!string.IsNullOrEmpty(name))
+            {
+                Response.Cookies.Append("citiesName", name);
+            }
+            else
+            {
+                if (Request.Cookies.ContainsKey("citiesName"))
+                {
+                    Response.Cookies.Delete("citiesName");
+                }
+            }
+
+            ViewBag.Name = name;
+
+            return View("Index", cities.GetFilteredAll(name));
         }
 
 

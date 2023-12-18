@@ -18,6 +18,28 @@ namespace LibraryWebApplication.Repositories
             return db.Authors;
         }
 
+        public IEnumerable<Author> GetFilteredAll(string? firstName, string? lastName, string? fatherName)
+        {
+            IEnumerable<Author> authors = GetAll();
+
+            if (!string.IsNullOrEmpty(firstName))
+            {
+                authors = authors.Where(author => author.FirstName.Contains(firstName));
+            }
+
+            if (!string.IsNullOrEmpty(lastName))
+            {
+                authors = authors.Where(author => author.LastName.Contains(lastName));
+            }
+
+            if (!string.IsNullOrEmpty(fatherName))
+            {
+                authors = authors.Where(author => author.FatherName.Contains(fatherName));
+            }
+
+            return authors;
+        }
+
         public int GetCount()
         {
             return db.Authors.Count();
