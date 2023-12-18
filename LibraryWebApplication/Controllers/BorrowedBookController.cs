@@ -18,7 +18,7 @@ namespace LibraryWebApplication.Controllers
 
 
         [HttpGet]
-        [ResponseCache]
+        [ResponseCache(Duration = 256)]
         public ActionResult Index(int pageNumber = 1, int pageSize = 10)
         {
             bool? returnStatus = bool.TryParse(Request.Cookies["borrowedBooksReturnStatus"], out var parsedReturnStatus) ? parsedReturnStatus : (bool?)null;
@@ -39,7 +39,7 @@ namespace LibraryWebApplication.Controllers
         }
 
         [HttpPost]
-        [ResponseCache]
+        [ResponseCache(Duration = 256)]
         public ActionResult Index(int pageNumber = 1, int pageSize = 10, bool? returnStatus = null, int? authorId = null, int? genreId = null)
         {
             if (returnStatus.HasValue)

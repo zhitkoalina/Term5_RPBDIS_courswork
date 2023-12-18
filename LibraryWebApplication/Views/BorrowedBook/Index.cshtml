@@ -17,7 +17,7 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="AuthorId">Filter by Author:</label>
+            <label for="AuthorId">Filter by Book Author:</label>
             <select name="AuthorId" id="AuthorId" class="form-control">
                 <option value="" selected="@(ViewBag.AuthorId == null)">All</option>
                 @foreach (var author in ViewBag.Authors)
@@ -27,7 +27,7 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="GenreId">Filter by Genre:</label>
+            <label for="GenreId">Filter by Book Genre:</label>
             <select name="GenreId" id="GenreId" class="form-control">
                 <option value="" selected="@(ViewBag.GenreId == null)">All</option>
                 @foreach (var genre in ViewBag.Genres)
@@ -44,22 +44,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Book.Isbn)
+                Book
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Book.Title)
+                Reader
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Reader.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Reader.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Employee.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Employee.LastName)
+                Employee
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.BorrowDate)
@@ -78,22 +69,21 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Book.Isbn)
+                    <a href="@Url.Action("Details", "Book", new { id = item.Book.BookId })">
+                        @Html.DisplayFor(modelItem => item.Book.Title)
+                    </a>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Book.Title)
+                    <a href="@Url.Action("Details", "Reader", new { id = item.Reader.ReaderId })">
+                        @Html.DisplayFor(modelItem => item.Reader.LastName)
+                        @Html.DisplayFor(modelItem => item.Reader.FirstName)
+                    </a>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Reader.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Reader.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Employee.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Employee.FirstName)
+                    <a href="@Url.Action("Details", "Employee", new { id = item.Employee.EmployeeId })">
+                        @Html.DisplayFor(modelItem => item.Employee.LastName)
+                        @Html.DisplayFor(modelItem => item.Employee.FirstName)
+                    </a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.BorrowDate)

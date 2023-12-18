@@ -24,7 +24,7 @@ namespace LibraryWebApplication.Controllers
 
 
         [HttpGet]
-        [ResponseCache]
+        [ResponseCache(Duration = 256)]
         public ActionResult Index()
         {
             string name = Request.Cookies["genresName"];
@@ -35,7 +35,7 @@ namespace LibraryWebApplication.Controllers
         }
 
         [HttpPost]
-        [ResponseCache]
+        [ResponseCache(Duration = 256)]
         public ActionResult Index(string? name = null)
         {
             if (!string.IsNullOrEmpty(name))

@@ -19,7 +19,7 @@ namespace LibraryWebApplication.Controllers
 
 
         [HttpGet]
-        [ResponseCache]
+        [ResponseCache(Duration = 256)]
         public ActionResult Index(int pageNumber = 1, int pageSize = 10)
         {
             string title = Request.Cookies["booksTitle"];
@@ -40,7 +40,7 @@ namespace LibraryWebApplication.Controllers
         }
 
         [HttpPost]
-        [ResponseCache]
+        [ResponseCache(Duration = 256)]
         public ActionResult Index(int pageNumber = 1, int pageSize = 10, string? title = null, int? authorId = null, int? genreId = null)
         {
             if (!string.IsNullOrEmpty(title))

@@ -97,7 +97,7 @@ namespace LibraryWebApplication.Repositories
 
         public Employee GetItem(int id)
         {
-            return db.Employees.Find(id);
+            return db.Employees.Include(e => e.Position).SingleOrDefault(e => e.EmployeeId == id);
         }
 
         public void Create(Employee employee)

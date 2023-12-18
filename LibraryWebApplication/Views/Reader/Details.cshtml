@@ -1,0 +1,15 @@
+﻿@model LibraryWebApplication.Models.Reader
+
+<h2>Reader Details</h2>
+<div>
+    <h4>Name: @Model.FirstName @Model.LastName @Model.FatherName</h4>
+    <p>Birth Date: @Model.BirthDate</p>
+    <p>Gender: @Model.Gender</p>
+    <p>Address: @Model.Address</p>
+    <p>Phone Number: @Model.PhoneNumber</p>
+    <p>Passport Data: @Model.PassportData</p>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

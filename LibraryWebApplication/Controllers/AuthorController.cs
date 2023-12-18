@@ -24,7 +24,7 @@ namespace LibraryWebApplication.Controllers
 
 
         [HttpGet]
-        [ResponseCache]
+        [ResponseCache(Duration = 256)]
         public ActionResult Index()
         {
             string firstName = Request.Cookies["authorsFirstName"];
@@ -39,7 +39,7 @@ namespace LibraryWebApplication.Controllers
         }
 
         [HttpPost]
-        [ResponseCache]
+        [ResponseCache(Duration = 256)]
         public ActionResult Index(string? firstName = null, string? lastName = null, string? fatherName = null)
         {
             if (!string.IsNullOrEmpty(firstName))

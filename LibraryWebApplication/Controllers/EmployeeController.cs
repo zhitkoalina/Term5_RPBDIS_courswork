@@ -19,7 +19,7 @@ namespace LibraryWebApplication.Controllers
 
 
         [HttpGet]
-        [ResponseCache]
+        [ResponseCache(Duration = 256)]
         public ActionResult Index(int pageNumber = 1, int pageSize = 10)
         {
             //int pageNumber = (int.TryParse(Request.Cookies["employeesPageNumber"], out var parsedPageNumber) ? parsedPageNumber : 1);
@@ -46,7 +46,7 @@ namespace LibraryWebApplication.Controllers
         }
 
         [HttpPost]
-        [ResponseCache]
+        [ResponseCache(Duration = 256)]
         public ActionResult Index(int pageNumber = 1, int pageSize = 10, string? firstName = null, string? lastName = null, string? fatherName = null, int? positionId = null)
         {
             //if (pageNumber != null)
@@ -146,6 +146,21 @@ namespace LibraryWebApplication.Controllers
             ViewBag.PositionId = positionId;
 
             return View(employees.GetFilteredPage(pageNumber, pageSize, firstName, lastName, fatherName, positionId));
+        }
+
+
+
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            Employee employee = employees.GetItem(id);
+
+            if (employee == null)
+            {
+                return View("Error");
+            }
+
+            return View(employee);
         }
 
 

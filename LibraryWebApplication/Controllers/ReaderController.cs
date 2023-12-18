@@ -24,7 +24,7 @@ namespace LibraryWebApplication.Controllers
 
 
         [HttpGet]
-        [ResponseCache]
+        [ResponseCache(Duration = 256)]
         public ActionResult Index()
         {
             string firstName = Request.Cookies["readersFirstName"];
@@ -41,7 +41,7 @@ namespace LibraryWebApplication.Controllers
         }
 
         [HttpPost]
-        [ResponseCache]
+        [ResponseCache(Duration = 256)]
         public ActionResult Index(string? firstName = null, string? lastName = null, string? fatherName = null, string? phoneNumber = null)
         {
             if (!string.IsNullOrEmpty(firstName))
@@ -98,6 +98,21 @@ namespace LibraryWebApplication.Controllers
             ViewBag.PhoneNumber = phoneNumber;
 
             return View("Index", readers.GetFilteredAll(firstName, lastName, fatherName, phoneNumber));
+        }
+
+
+
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            Reader reader = readers.GetItem(id);
+
+            if (reader == null)
+            {
+                return View("Error");
+            }
+
+            return View(reader);
         }
 
 

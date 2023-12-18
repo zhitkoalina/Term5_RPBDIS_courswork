@@ -1,0 +1,11 @@
+﻿@model LibraryWebApplication.Models.Employee
+
+<h2>Employee Details</h2>
+<div>
+    <h4>Name: @Model.FirstName @Model.LastName @Model.FatherName</h4>
+    <p>Position: @Model.Position.Name</p>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
