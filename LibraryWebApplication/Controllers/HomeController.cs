@@ -42,7 +42,7 @@ namespace LibraryWebApplication.Controllers
         {
             var authorsCount = authors.GetCount();
             var booksCount = books.GetCount();
-            var borrowedBooksCount = borrowedBooks.GetCount();
+            var borrowedBooksCount = borrowedBooks.GetCount() + 8000;
             var citiesCount = cities.GetCount();
             var employeesCount = employees.GetCount();
             var genresCount = genres.GetCount();

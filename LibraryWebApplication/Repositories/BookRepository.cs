@@ -90,7 +90,7 @@ namespace LibraryWebApplication.Repositories
                 query = query.Where(b => b.Genre.GenreId == genreId.Value);
             }
 
-            return query.OrderByDescending(b => b.PublisherId)
+            return query.OrderByDescending(b => b.BookId)
                         .Skip((pageNumber - 1) * pageSize)
                         .Take(pageSize)
                         .ToList();
